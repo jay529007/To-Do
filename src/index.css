@@ -1,0 +1,35 @@
+@import "tailwindcss";
+
+
+/* Fade In */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.4s ease-out forwards;
+}
+
+/* Fade Out */
+.fade-out {
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+
+/* Glow on Hover */
+.glow:hover {
+  box-shadow: 0 0 10px #c100be;
+}
+
+/* Pop effect */
+.pop:active {
+  transform: scale(0.95);
+  transition: transform 0.1s ease-in-out;
+}
