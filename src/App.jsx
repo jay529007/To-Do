@@ -1,18 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { addTodo, removeTodo } from "./features/todoSlice";
+import { addTodo, removeTodo, updateTodo } from "./features/todoSlice";
 
 function App() {
   const [input, setInput] = useState("");
-  // Correct selector: accessing state.todo.todos
+  const [editId, setEditId] = useState(null);
   const todos = useSelector((state) => state.todo.todos);
   const dispatch = useDispatch();
 
   return (
     <div className=" flex flex-col gap-3">
-      {/* <div className="flex justify-between items-center"> */}
       <h1 className="text-xl text-center font-bold">Todo</h1>
-      {/* </div> */}
       <div className="flex justify-center gap-3 ">
         <input
           value={input}
@@ -24,8 +22,13 @@ function App() {
           className="text-white  bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5  dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
           onClick={() => {
             if (input.trim() !== "") {
-              dispatch(addTodo(input));
-              setInput("");
+              if (editId) {
+                dispatch(updateTodo({ id: editId, Text: input }));
+                setEditId(null); // reset
+              } else {
+                dispatch(addTodo(input));
+              }
+              setInput(""); // reset input
             }
           }}
         >
@@ -45,6 +48,15 @@ function App() {
               onClick={() => dispatch(removeTodo(todo.id))}
             >
               X
+            </button>
+            <button
+              onClick={() => {
+                setInput(todo.Text);
+                setEditId(todo.id); // store which todo you're editing
+              }}
+              className="text-white px-4 py-2 ml-3 rounded-lg bg-yellow-400"
+            >
+              Edit
             </button>
           </li>
         ))}
